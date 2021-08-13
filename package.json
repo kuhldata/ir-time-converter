@@ -1,0 +1,22 @@
+{
+  "name": "ir-time-converter",
+  "version": "1.0.0",
+  "description": "Converts js date to iRacing time and the other way around.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuhldata/ir-time-converter.git"
+  },
+  "keywords": [
+    "iRacing",
+    "season",
+    "week",
+    "date",
+    "time"
+  ],
+  "author": "Karl-Heinz Wallwitz",
+  "license": "MIT"
+}
