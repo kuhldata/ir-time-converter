@@ -13,15 +13,7 @@ const DAY_MS = 24*60*60*1000;
  * @property {boolean} isWeek13 indicated if the given week is "week13" of the given season
  */
 
-/**
- * 
- * @param {Object} date JS date for which the IRacingTime should be calculated.
- * @returns {IRacingTime} The IRacingTime for given date
- * @throws Will throw an error if the given date does not belong to any of the seasons known by the module
- */
-const dateToIRacingTime = (date) => {
-  throw new Error('Not yet implemented :D');
-}
+
 
 /**
  * @typedef {Object} TimeFrame
@@ -143,10 +135,55 @@ const getSeasonWeekCount = (year, season, includeWeek13 = false) => {
   return weekCount;
 }
 
+/**
+ * 
+ * @param {Object} date JS date for which the IRacingTime should be calculated.
+ * @returns {IRacingTime} The IRacingTime for given date
+ * @throws Will throw an error if the given date does not belong to any of the seasons known by the module
+ */
+ const dateToIRacingTime = (date) => {
+  const year = date.getUTCFullYear();
+  let yearCounter = year - 1;
+  let seasonCounter = 1;
+  let season = null;
+  console.log(year);
+  while( yearCounter <= year + 1 ) {
+    let maySeason = seasons.getSeason(yearCounter, seasonCounter, true);
+    if(maySeason.startTime <= date.getTime() && date.getTime() <= maySeason.endTime) {
+      season = maySeason;
+      break;
+    }
+    seasonCounter++;
+    if(seasonCounter > 4) {
+      seasonCounter = 1;
+      yearCounter++;
+    }
+  }
+
+  if(!season) throw Error('Can not calculate season bondaries');
+
+  const timeSinceSeasonStart = date.getTime() - season.startTime;
+  const timeSinceWeekStart = timeSinceSeasonStart % WEEK_MS;
+  const weekNumber = (timeSinceSeasonStart - timeSinceWeekStart) / WEEK_MS + 1;
+  const dayNumber = (timeSinceWeekStart - (timeSinceWeekStart % DAY_MS)) / DAY_MS;
+  const isWeek13 = (weekNumber == 13 && !season.isLeepSeason || weekNumber > 13);
+
+  return {
+    year: season.year,
+    season: season.season,
+    week: weekNumber,
+    day: dayNumber,
+    isLeepSeason: season.isLeepSeason,
+    isWeek13,
+  }
+}
+
 module.exports = {
-  // dateToIRacingTime,
+  dateToIRacingTime,
   iRacingDayToDates,
   iRacingSeasonToDates,
   iRacingWeekToDates,
   getSeasonWeekCount,
 };
+
+console.log(dateToIRacingTime(new Date()))
