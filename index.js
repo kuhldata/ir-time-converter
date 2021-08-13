@@ -146,7 +146,6 @@ const getSeasonWeekCount = (year, season, includeWeek13 = false) => {
   let yearCounter = year - 1;
   let seasonCounter = 1;
   let season = null;
-  console.log(year);
   while( yearCounter <= year + 1 ) {
     let maySeason = seasons.getSeason(yearCounter, seasonCounter, true);
     if(maySeason.startTime <= date.getTime() && date.getTime() <= maySeason.endTime) {
@@ -185,5 +184,3 @@ module.exports = {
   iRacingWeekToDates,
   getSeasonWeekCount,
 };
-
-console.log(dateToIRacingTime(new Date()))
