@@ -1,6 +1,6 @@
 {
   "name": "ir-time-converter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Converts js date to iRacing time and the other way around.",
   "main": "index.js",
   "scripts": {
